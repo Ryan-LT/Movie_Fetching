@@ -23,7 +23,8 @@
       "react-app/jest",
       "airbnb",
       "plugin:promise/recommended",
-      "plugin:unicorn/recommended"
+      "plugin:unicorn/recommended",
+      "plugin:eslint-comments/recommended"
     ],
     "overrides": [
       {
@@ -58,6 +59,7 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-unicorn": "^33.0.1"
   }
