@@ -47,6 +47,11 @@
       }
     ]
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -60,9 +65,12 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^33.0.1"
+    "eslint-plugin-unicorn": "^33.0.1",
+    "husky": "^6.0.0"
   }
 }
