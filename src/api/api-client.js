@@ -8,11 +8,10 @@ export const createApi = () => {
   apiClient = axios.create({
     paramsSerializer: (parameters) => qs.stringify(parameters, { arrayFormat: 'repeat' }),
   });
+  apiClient.defaults.baseURL = 'https://dog.ceo/api/';
 
-  return {
-    get: {},
-    post: {},
-    put: {},
-    delete: {},
-  };
+  apiClient.interceptors.request.use((config) => ({
+    ...config,
+    // headers: { Authorization: 'Bearer ' },
+  }));
 };

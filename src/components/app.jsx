@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { apiClient } from '../api';
 import './styles/app.css';
 
-export const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <p>
-        Edit
-        {' '}
-        <code>src/App.js</code>
-        {' '}
-        and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
-);
+export const App = () => {
+  const [dogImages, setDogImages] = useState([]);
+
+  useEffect(() => {
+    apiClient
+      .get('breed/hound/images')
+      .then((response) => setDogImages(response.data.message))
+      .catch((error) => new Error(error));
+  }, []);
+
+  if (dogImages.length === 0) return <h1>Loading...</h1>;
+
+  return (
+    <div className="App">
+      <div className="d-flex">
+        {dogImages.slice(0, 3).map((dog) => (
+          <img key={dog} className="mx-5" alt={dog} src={dog} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default App;
