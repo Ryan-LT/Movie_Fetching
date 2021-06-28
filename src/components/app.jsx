@@ -1,26 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { apiClient } from '../api';
+import React, { useState } from 'react';
+import { fetchMovieByTitle } from '../api';
 import './styles/app.css';
 
 export const App = () => {
-  const [dogImages, setDogImages] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [movie, setMovie] = useState('');
+  const handleSearch = async () => {
+    const response = await fetchMovieByTitle(searchText);
+    setMovie(response);
+  };
 
-  useEffect(() => {
-    apiClient
-      .get('breed/hound/images')
-      .then((response) => setDogImages(response.data.message))
-      .catch((error) => new Error(error));
-  }, []);
-
-  if (dogImages.length === 0) return <h1>Loading...</h1>;
+  const handleInputText = (title) => {
+    if (title) setSearchText(title);
+  }
 
   return (
     <div className="App">
-      <div className="d-flex">
-        {dogImages.slice(0, 3).map((dog) => (
-          <img key={dog} className="mx-5" alt={dog} src={dog} />
-        ))}
-      </div>
+      <input
+        type="text"
+        placeholder="Input title"
+        onChange={({ target: { value } }) => handleInputText(value)}
+      />
+      <button type="button" onClick={handleSearch}>Search</button>
+      {movie.Error || !movie ? (
+        <h1>{movie && "Movie Not Found"}</h1>
+      ) : (
+        <>
+          <h1>Title: {movie.Title}</h1>
+          <h2>Year: {movie.Year}</h2>
+          <h2>Plot: {movie.Plot}</h2>
+          <h2>Genre: </h2>
+          {movie.Genre ? (
+            movie.Genre.split(',').map((g) => <p>{g}</p>)
+          ) : (
+            <p>N/A</p>
+          )}
+        </>
+      )}
     </div>
   );
 };

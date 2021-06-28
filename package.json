@@ -23,29 +23,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "airbnb",
-      "plugin:promise/recommended",
-      "plugin:unicorn/recommended",
-      "plugin:eslint-comments/recommended"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.js?(x)"
-        ],
-        "rules": {
-          "react/jsx-filename-extension": [
-            "error",
-            {
-              "extensions": [
-                ".js",
-                ".jsx"
-              ]
-            }
-          ]
-        }
-      }
+      "react-app/jest"
     ]
   },
   "commitlint": {
