@@ -1,7 +1,6 @@
 import qs from 'qs';
 import axios from 'axios';
 
-// eslint-disable-next-line import/no-mutable-exports
 export let apiClient;
 
 export const createApi = () => {
@@ -13,12 +12,11 @@ export const createApi = () => {
 
   apiClient.interceptors.request.use((config) => ({
     ...config,
-    // headers: { Authorization: 'Bearer ' },
   }));
 };
 
-export const fetchMovieByTitle =  async (title) => {
-  return await apiClient
+export const fetchMovieByTitle =  (title) => {
+  return apiClient
     .get(`?apikey=922db138&t=${title}`)
     .then((response) => response.data)
     .catch((error) => new Error(error));

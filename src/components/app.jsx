@@ -1,41 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { fetchMovieByTitle } from '../api';
 import './styles/app.css';
 
 export const App = () => {
-  const [searchText, setSearchText] = useState('');
-  const [movie, setMovie] = useState('');
+  const inputRef = useRef();
+  const [movie, setMovie] = useState();
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const handleSearch = async () => {
-    const response = await fetchMovieByTitle(searchText);
-    setMovie(response);
+    const inputValue = inputRef.current.value;
+    setIsLoading(true);
+    try {
+      const response = await fetchMovieByTitle(inputValue);
+      if (response.Error) {
+        setError(response.Error);
+        setMovie();
+      } else {
+        setError(undefined);
+        setMovie(response);
+      }
+    } catch (error) {
+      setMovie();
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const handleInputText = (title) => {
-    if (title) setSearchText(title);
-  }
 
   return (
     <div className="App">
-      <input
-        type="text"
-        placeholder="Input title"
-        onChange={({ target: { value } }) => handleInputText(value)}
-      />
-      <button type="button" onClick={handleSearch}>Search</button>
-      {movie.Error || !movie ? (
-        <h1>{movie && "Movie Not Found"}</h1>
-      ) : (
+      <input ref={inputRef} type="text" placeholder="Input title" />
+      <button type="button" onClick={handleSearch}>
+        Search
+      </button>
+      {isLoading && <h1>{'Loading...'}</h1>}
+      {error && <h1>{'Something went wrong'}</h1>}
+      {movie && !isLoading && (
         <>
           <h1>Title: {movie.Title}</h1>
           <h2>Year: {movie.Year}</h2>
           <h2>Plot: {movie.Plot}</h2>
-          <h2>Genre: </h2>
-          {movie.Genre ? (
-            movie.Genre.split(',').map((g) => <p>{g}</p>)
-          ) : (
-            <p>N/A</p>
-          )}
         </>
+      )}
+      {movie && movie.Genre && !isLoading && (
+        <ul>
+          Genre:{' '}
+          {movie.Genre.split(',').map((g) => (
+            <li key={g}>{g}</li>
+          ))}
+        </ul>
       )}
     </div>
   );
